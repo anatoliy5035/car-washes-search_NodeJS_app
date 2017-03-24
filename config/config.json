@@ -1,0 +1,5 @@
+{
+  "mainUrl": "http://vse-sto.com.ua/",
+  "DBUrl": "mongodb://localhost:27017/scraped-data",
+  "version": "0.0.1"
+}
