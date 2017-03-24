@@ -1,6 +1,3 @@
-// This example displays an address form, using the autocomplete feature
-// of the Google Places API to help users fill in the information.
-
 var placeSearch, autocomplete;
 var componentForm = {
     street_number: 'short_name',
@@ -30,9 +27,6 @@ function fillInAddress() {
 }
 // [END region_fillform]
 
-// [START region_geolocation]
-// Bias the autocomplete object to the user's geographical location,
-// as supplied by the browser's 'navigator.geolocation' object.
 function geolocate() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
