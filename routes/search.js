@@ -1,8 +1,8 @@
 module.exports = (req, res) => {
-    // res.render('map', {
-    //     lat : req.body.lat,
-    //     lng : req.body.lng
-    // });
-    // res.redirect('/search');
-    res.send()
+    let convertedCords = {
+        lat : 49.428180,
+        lng : 32.039510
+    };
+    console.log(req.body)
+    res.send(convertedCords);
 };

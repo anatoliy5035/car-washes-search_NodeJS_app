@@ -5,7 +5,6 @@ const searchPage = require('./search-page');
 
 routes.get('/', input);
 routes.get('/search', searchPage);
-routes.post('/searchCords', search);
-// routes.post('/searchMyLocation', searchMyLocation);
+routes.post('/getCords', search);
 
 module.exports = routes;

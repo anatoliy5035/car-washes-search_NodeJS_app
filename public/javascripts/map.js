@@ -30,18 +30,21 @@ let initMap = (function () {
         })
     }
 
-    function getMyLocation() {
-        return new Promise(function (resolve, reject) {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
+    function getMyLocationFromUrl() {
+        let pairs = location.search.slice(1).split('&');
+        let resultCords = {};
+        pairs.forEach(function (pair) {
+            pair = pair.split('=');
+            resultCords[pair[0]] = decodeURIComponent(pair[1] || '');
         });
+        return resultCords;
     }
 
     function setLocationOnMap(position) {
          pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lat: parseFloat(position.lat),
+            lng: parseFloat(position.lng)
         };
-
         let marker = new google.maps.Marker({
             position : new google.maps.LatLng(pos.lat, pos.lng),
             map : map
@@ -56,7 +59,7 @@ let initMap = (function () {
             let center = new google.maps.LatLng(posLoc.lat, posLoc.lng);
             for (let i = 0; i < markers.length; i++) {
                 let distance = google.maps.geometry.spherical.computeDistanceBetween(center, new google.maps.LatLng(markers[i].lat, markers[i].lng))
-                if(distance < 7000) {
+                if(distance < 10000) {
                     let marker = new google.maps.Marker({
                         position : new google.maps.LatLng(markers[i].lat, markers[i].lng),
                         map : map,
@@ -87,7 +90,7 @@ let initMap = (function () {
         })
         .then(function (marks) {
             markers = marks;
-            return getMyLocation();
+            return getMyLocationFromUrl();
         })
         .then(function (pos) {
             setLocationOnMap(pos);
