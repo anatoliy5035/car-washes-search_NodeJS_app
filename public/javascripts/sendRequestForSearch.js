@@ -13,8 +13,8 @@ $('.search-button').on('click', function (e) {
     fetch('/getCords', {
         method: 'post',
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': 'text/plain',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
         },
         body: input
     }).then(function(response) {

@@ -3,6 +3,7 @@ module.exports = (req, res) => {
         lat : 49.428180,
         lng : 32.039510
     };
-    console.log(req.body)
+    let address = Object.keys(req.body)[0];
+    console.log(address);
     res.send(convertedCords);
 };
