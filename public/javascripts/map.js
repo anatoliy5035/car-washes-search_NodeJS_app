@@ -107,3 +107,4 @@ let initMap = (function () {
 })();
 
 initMap.init();
+
