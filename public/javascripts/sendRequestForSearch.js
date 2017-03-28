@@ -19,10 +19,10 @@ let getMyPosition = {
 
         $('.search-button').on('click', function (e) {
             e.preventDefault();
-            var input = $('.search-address').val();
-            fetch('https://maps.googleapis.com/maps/api/geocode/json?address='+input+'&key=AIzaSyBdSWRnYpEd7XTwAKS7bptyyVlj5E0QBaQ', {
+            var inputValue = $('.search-address').val();
+            fetch('https://maps.googleapis.com/maps/api/geocode/json?address='+inputValue+'&key=AIzaSyBdSWRnYpEd7XTwAKS7bptyyVlj5E0QBaQ', {
                 method: 'post',
-                body: input
+                body: inputValue
             })
             .then(function(response) {
                 return response.json();
