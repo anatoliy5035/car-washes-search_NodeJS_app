@@ -2,7 +2,7 @@
 let initMap = (function () {
     let map = new google.maps.Map(document.getElementById('js-map'), {
         center: {lat: -34.397, lng: 150.644},
-        zoom: 15,
+        zoom: 13,
         scrollwheel: false,
     });
     let infoWindow = new google.maps.InfoWindow({map: map});
@@ -11,7 +11,7 @@ let initMap = (function () {
     let templateInfoWindow;
     let icon = {
         url: 'images/ico.png',
-        size: new google.maps.Size(50, 50),
+        size: new google.maps.Size(50, 61),
         origin: new google.maps.Point(0, 0)
     };
     let locationIco = {
@@ -27,17 +27,19 @@ let initMap = (function () {
                 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
                 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
             }
-        })
+        });
     }
 
     function getMyLocationFromUrl() {
-        let pairs = location.search.slice(1).split('&');
-        let resultCords = {};
-        pairs.forEach(function (pair) {
-            pair = pair.split('=');
-            resultCords[pair[0]] = decodeURIComponent(pair[1] || '');
+        return new Promise(function (resolve, reject) {
+            let pairs = location.search.slice(1).split('&');
+            let resultCords = {};
+            pairs.forEach(function (pair) {
+                pair = pair.split('=');
+                resultCords[pair[0]] = decodeURIComponent(pair[1] || '');
+            });
+            resolve(resultCords);
         });
-        return resultCords;
     }
 
     function setLocationOnMap(position) {
@@ -84,20 +86,26 @@ let initMap = (function () {
     }
 
     function init() {
-        getMarkersFromDB()
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (marks) {
-            markers = marks;
-            return getMyLocationFromUrl();
-        })
-        .then(function (pos) {
+        getMyLocationFromUrl()
+        .then((pos) => {
             setLocationOnMap(pos);
         })
-        .then(function () {
+        getMarkersFromDB()
+        .then((response) => {
+            if(response.status !== 200) {
+                console.log('Cannot get markers from db')
+            }
+            return response.json();
+        })
+        .then((markersArray) => {
+            markers = markersArray;
+        })
+        .then(() => {
             writeMarkers(markers);
         })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
     return {

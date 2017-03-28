@@ -17,22 +17,25 @@ let getMyPosition = {
     events : function () {
         let self = this;
 
-        $('.search-button').on('click', function (e) {
+        $('#submitInputButton').on('click', function (e) {
             e.preventDefault();
             var inputValue = $('.search-address').val();
             fetch('https://maps.googleapis.com/maps/api/geocode/json?address='+inputValue+'&key=AIzaSyBdSWRnYpEd7XTwAKS7bptyyVlj5E0QBaQ', {
                 method: 'post',
                 body: inputValue
             })
-            .then(function(response) {
+            .then(response => {
+                if(response.status == 'INVALID_REQUEST') {
+                    throw new Error('invalid request from google geolocation');
+                }
                 return response.json();
             })
-            .then(function(parsedResponse) {
+            .then(parsedResponse => {
                 let cordsObj = parsedResponse.results[0].geometry.location;
                 window.location='/search?'+ self.convertObJToUrl(cordsObj);
             })
-            .catch(function(error) {
-                console.log('Request failed', error)
+            .catch(err => {
+                console.log(err);
             });
         });
 
@@ -49,6 +52,9 @@ let getMyPosition = {
             .then(posObj => {
                 let cordsObj = self.convertObJToUrl(posObj);
                 window.location='/search?'+ cordsObj;
+            })
+            .catch(err => {
+                console.log(err);
             });
         });
     },
