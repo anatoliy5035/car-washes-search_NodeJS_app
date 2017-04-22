@@ -14,6 +14,14 @@ let getMyPosition = {
         });
     },
 
+    setLocationOnMap : function (position, zoomValue) {
+        if(zoomValue !== undefined) {
+            window.location='/search?'+ position+ '&zoom='+ zoomValue;
+        } else {
+            window.location='/search?'+ position;
+        }
+    },
+
     events : function () {
         let self = this;
 
@@ -32,7 +40,8 @@ let getMyPosition = {
             })
             .then(parsedResponse => {
                 let cordsObj = parsedResponse.results[0].geometry.location;
-                window.location='/search?'+ self.convertObJToUrl(cordsObj);
+                let position  = self.convertObJToUrl(cordsObj);
+                self.setLocationOnMap(position);
             })
             .catch(err => {
                 console.log(err);
@@ -42,20 +51,30 @@ let getMyPosition = {
         $('#getMyLoc').on('click', function (e) {
             e.preventDefault();
             self.getMyGeolocation()
-            .then(position => {
-                let posObj = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                return posObj;
-            })
-            .then(posObj => {
-                let cordsObj = self.convertObJToUrl(posObj);
-                window.location='/search?'+ cordsObj;
-            })
-            .catch(err => {
-                console.log(err);
-            });
+                .then(position => {
+                    let positoinObj = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    return positoinObj;
+                })
+                .then(posObj => {
+                    let cordsObj = self.convertObJToUrl(posObj);
+                    self.setLocationOnMap(cordsObj);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+
+        $('#getAllCountry').on('click', function (e) {
+            e.preventDefault();
+            let allCountryObj = {
+                lat: 49.391388,
+                lng: 32.006755
+            };
+            let cordsObj = self.convertObJToUrl(allCountryObj);
+            self.setLocationOnMap(cordsObj, 7);
         });
     },
 
@@ -63,6 +82,6 @@ let getMyPosition = {
         this.events();
     },
 
-}
+};
 
 getMyPosition.init();

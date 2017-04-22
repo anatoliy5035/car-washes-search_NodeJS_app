@@ -1,10 +1,11 @@
 
-let initMap = (function () {
-    let map = new google.maps.Map(document.getElementById('js-map'), {
+var Map = (function () {
+    let myOptions = {
         center: {lat: -34.397, lng: 150.644},
-        zoom: 13,
+        zoom: setZoom() || 13,
         scrollwheel: false,
-    });
+    };
+    let map = new google.maps.Map(document.getElementById('js-map'), myOptions);
     let infoWindow = new google.maps.InfoWindow({map: map});
     let pos;
     let markers;
@@ -18,6 +19,16 @@ let initMap = (function () {
         url: 'images/loc.png',
         size: new google.maps.Size(50, 50),
         origin: new google.maps.Point(0, 0)
+    };
+
+    function setZoom() {
+        let pairs = location.search.slice(1).split('&');
+        let resultCords = {};
+        pairs.forEach(function (pair) {
+            pair = pair.split('=');
+            resultCords[pair[0]] = decodeURIComponent(pair[1] || '');
+        });
+        return +resultCords.zoom;
     }
 
     function getMarkersFromDB() {
@@ -109,10 +120,11 @@ let initMap = (function () {
     }
 
     return {
-        init: init
+        init: init,
+        setZoom : setZoom
     }
 
 })();
 
-initMap.init();
+Map.init();
 
