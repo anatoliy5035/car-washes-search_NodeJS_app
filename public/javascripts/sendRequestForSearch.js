@@ -16,9 +16,9 @@ let getMyPosition = {
 
     setLocationOnMap : function (position, zoomValue) {
         if(zoomValue !== undefined) {
-            window.location='/search?'+ position+ '&zoom='+ zoomValue;
+            window.location='/search?' + position + '&zoom=' + zoomValue + '&scale=true';
         } else {
-            window.location='/search?'+ position;
+            window.location='/search?' + position;
         }
     },
 
