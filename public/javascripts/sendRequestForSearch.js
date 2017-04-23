@@ -8,13 +8,13 @@ let getMyPosition = {
         return str.join("&");
     },
 
-    getMyGeolocation : function () {
+    getMyGeolocation: function () {
         return new Promise(function (resolve, reject) {
             navigator.geolocation.getCurrentPosition(resolve, reject);
         });
     },
 
-    setLocationOnMap : function (position, zoomValue) {
+    setLocationOnMap: function (position, zoomValue) {
         if(zoomValue !== undefined) {
             window.location='/search?' + position + '&zoom=' + zoomValue + '&scale=true';
         } else {
@@ -22,7 +22,7 @@ let getMyPosition = {
         }
     },
 
-    events : function () {
+    events: function () {
         let self = this;
 
         $('#submitInputButton').on('click', function (e) {
@@ -76,6 +76,26 @@ let getMyPosition = {
             let cordsObj = self.convertObJToUrl(allCountryObj);
             self.setLocationOnMap(cordsObj, 7);
         });
+
+        $('body').on('click', '#popularCity', function(e) {
+            e.preventDefault();
+            let allCountryObj = {
+                lat: $(this).data('lat'),
+                lng: $(this).data('lng')
+            };
+            let cordsObj = self.convertObJToUrl(allCountryObj);
+            self.setLocationOnMap(cordsObj);
+        });
+
+        // $('').on('click', function (e) {
+
+            // let allCountryObj = {
+            //     lat: 49.391388,
+            //     lng: 32.006755
+            // };
+            // let cordsObj = self.convertObJToUrl(allCountryObj);
+            // self.setLocationOnMap(cordsObj, 7);
+        // });
     },
 
     init : function () {

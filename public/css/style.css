@@ -1,6 +1,6 @@
 header {
     width: 100%;
-    height: 200px;
+    height: 100px;
     background: powderblue;
 }
 
@@ -36,10 +36,6 @@ h1 {
     margin: 0 !important;
 }
 
-.search-form {
-    margin-bottom: 35px;
-}
-
 .gm-style-iw h4 {
     font-size: 15px;
 }
@@ -53,7 +49,7 @@ h1 {
 }
 
 .search.dropdown {
-    width: 352px !important;
+    width: 400px !important;
     float: left;
 }
 
@@ -64,4 +60,45 @@ div.ui.selection.dropdown .menu>.item {
 .search.dropdown .item a {
     display: block;
     padding: 15px;
+}
+@media only screen and (min-width: 992px) {
+    .ui.search.dropdown .menu {
+        max-height: 60.028571rem !important;
+    }
+}
+
+.inputs-search {
+    margin: 0 auto;
+}
+
+.input-section {
+    padding-top: 80px;
+}
+
+.dropdown.search {
+    margin-right: 50px;
+}
+
+.location-icon-dropdown {
+    width: 23px;
+    margin-right: 13px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ui.selection.dropdown {
+    padding: 6px !important;
+    min-height: auto !important;
+}
+
+.ui.search.selection.dropdown>input.search {
+    padding-left: 40px !important;
+}
+
+.ui.input input.search-address {
+    margin-right: 8px;
+}
+
+div.ui.search.dropdown>.text {
+    top: 1px;
 }
