@@ -8,9 +8,6 @@ const bodyParser = require('body-parser');
 const debug = require('debug')('nodejs-scraping:server');
 const http = require('http');
 const exphbs  = require('express-handlebars');
-const mongoose = require('./mongoose').mongoose;
-const getMarkersfromDB = require('./mongoose/getMarkersfromDB')(app);
-const router = express.Router();
 const routes = require('./routes');
 // view engine setup
 app.engine('handlebars', exphbs({
