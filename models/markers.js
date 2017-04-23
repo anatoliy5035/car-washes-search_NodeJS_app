@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
 var markerSchema = new Schema({
     name: String,
@@ -14,4 +14,7 @@ var markerSchema = new Schema({
     description: String
 });
 
-module.exports = mongoose.model('car_washes', markerSchema);
+let markerModel = mongoose.model('car_washes', markerSchema);
+
+module.exports = markerModel;
+
