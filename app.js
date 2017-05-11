@@ -9,6 +9,7 @@ const debug = require('debug')('nodejs-scraping:server');
 const http = require('http');
 const exphbs  = require('express-handlebars');
 const routes = require('./routes');
+
 // view engine setup
 app.engine('handlebars', exphbs({
   defaultLayout: 'main',

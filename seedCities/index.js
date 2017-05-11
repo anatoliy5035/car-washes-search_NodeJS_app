@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
-var City = require('../models/cities');
+const mongoose = require('mongoose');
+const City = require('../models/cities');
 mongoose.connect('mongodb://localhost:27017/scraped-data');
 
-var cities = [
+const cities = [
     new City({
         city: 'Киев',
         lat: 50.444247,
@@ -25,7 +25,7 @@ var cities = [
     })
 ];
 
-var done = 0;
+let done = 0;
 cities.forEach(function (city, i) {
     city.save(function (err, result) {
         done++

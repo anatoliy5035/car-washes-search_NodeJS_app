@@ -1,7 +1,8 @@
 let getMyPosition = {
+
     convertObJToUrl: function (Obj) {
-        var str = [];
-        for(var p in Obj)
+        let str = [];
+        for(let p in Obj)
             if (Obj.hasOwnProperty(p)) {
                 str.push(encodeURIComponent(p) + "=" + encodeURIComponent(Obj[p]));
             }
@@ -15,10 +16,10 @@ let getMyPosition = {
     },
 
     setLocationOnMap: function (position, zoomValue) {
-        if(zoomValue !== undefined) {
-            window.location='/search?' + position + '&zoom=' + zoomValue + '&scale=true';
+        if (zoomValue !== undefined) {
+            Map.init(position, zoomValue);
         } else {
-            window.location='/search?' + position;
+            Map.init(position);
         }
     },
 
@@ -27,8 +28,10 @@ let getMyPosition = {
 
         $('#submitInputButton').on('click', function (e) {
             e.preventDefault();
-            var inputValue = $('.search-address').val();
-            fetch('https://maps.googleapis.com/maps/api/geocode/json?address='+inputValue+'&key=AIzaSyBdSWRnYpEd7XTwAKS7bptyyVlj5E0QBaQ', {
+            let inputValue = $('.search-address').val();
+
+            //send request for google geometry to get lat, lng from inputValue
+            fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + inputValue + '&key=AIzaSyBdSWRnYpEd7XTwAKS7bptyyVlj5E0QBaQ', {
                 method: 'post',
                 body: inputValue
             })
@@ -40,8 +43,9 @@ let getMyPosition = {
             })
             .then(parsedResponse => {
                 let cordsObj = parsedResponse.results[0].geometry.location;
-                let position  = self.convertObJToUrl(cordsObj);
-                self.setLocationOnMap(position);
+                // let position  = self.convertObJToUrl(cordsObj);
+                // let position =
+                self.setLocationOnMap(cordsObj);
             })
             .catch(err => {
                 console.log(err);
@@ -86,16 +90,6 @@ let getMyPosition = {
             let cordsObj = self.convertObJToUrl(allCountryObj);
             self.setLocationOnMap(cordsObj);
         });
-
-        // $('').on('click', function (e) {
-
-            // let allCountryObj = {
-            //     lat: 49.391388,
-            //     lng: 32.006755
-            // };
-            // let cordsObj = self.convertObJToUrl(allCountryObj);
-            // self.setLocationOnMap(cordsObj, 7);
-        // });
     },
 
     init : function () {

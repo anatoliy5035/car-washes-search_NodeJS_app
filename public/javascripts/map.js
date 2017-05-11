@@ -1,17 +1,16 @@
 var Map = (function () {
     let myOptions = {
-        center: {lat: -34.397, lng: 150.644},
+        center: {lat: 50.444247, lng: 30.508972},
         zoom: setZoom() || 13,
-        scrollwheel: false,
     };
     let map = new google.maps.Map(document.getElementById('js-map'), myOptions);
     let infoWindow = new google.maps.InfoWindow({map: map});
-    let pos;
+    let positionGlob;
     let markers;
     let templateInfoWindow;
     let icon = {
         url: 'images/ico.png',
-        size: new google.maps.Size(50, 61),
+        size: new google.maps.Size(59, 85),
         origin: new google.maps.Point(0, 0)
     };
     let locationIco = {
@@ -50,29 +49,14 @@ var Map = (function () {
         });
     }
 
-    function getMyLocationFromUrl() {
-        return new Promise(function (resolve, reject) {
-            let pairs = location.search.slice(1).split('&');
-            let resultCords = {};
-            pairs.forEach(function (pair) {
-                pair = pair.split('=');
-                resultCords[pair[0]] = decodeURIComponent(pair[1] || '');
-            });
-            resolve(resultCords);
-        });
-    }
-
     function setLocationOnMap(position) {
-         pos = {
-            lat: parseFloat(position.lat),
-            lng: parseFloat(position.lng)
-        };
+        positionGlob = position
         let marker = new google.maps.Marker({
-            position : new google.maps.LatLng(pos.lat, pos.lng),
+            position : new google.maps.LatLng(position.lat, position.lng),
             map : map
         });
 
-        map.setCenter(pos);
+        map.setCenter(position);
     }
 
     function addInfoWindow(marker, i) {
@@ -103,7 +87,7 @@ var Map = (function () {
         }
     }
 
-    function writeAllMarkers(center, markers) {
+    function writeAllCountryMarkers(center, markers) {
         for (let i = 0; i < markers.length; i++) {
             let marker = new google.maps.Marker({
                 position: new google.maps.LatLng(markers[i].lat, markers[i].lng),
@@ -115,23 +99,21 @@ var Map = (function () {
     }
 
     function writeMarkers(markers) {
-        return new Promise(function (resolve, reject) {
-            let posLoc = pos;
-            let center = new google.maps.LatLng(posLoc.lat, posLoc.lng);
-            if (getScale()) {
-                writeAllMarkers(center, markers);
-            } else {
+        console.log(positionGlob);
+        // return new Promise(function (resolve, reject) {
+            let positionLoc = positionGlob;
+            let center = new google.maps.LatLng(positionLoc.lat, positionLoc.lng);
+            // if (getScale()) {
+            //     writeAllCountryMarkers(center, markers);
+            // } else {
                 writeRadiusMarkers(center, markers);
-            }
-            resolve();
-        })
+            // }
+            // resolve();
+        // })
     }
 
-    function init() {
-        getMyLocationFromUrl()
-        .then((pos) => {
-            setLocationOnMap(pos);
-        })
+    function init(position, zoom) {
+        setLocationOnMap(position);
         getMarkersFromDB()
         .then((response) => {
             if(response.status !== 200) {
@@ -157,5 +139,5 @@ var Map = (function () {
 
 })();
 
-Map.init();
+// Map.init();
 
