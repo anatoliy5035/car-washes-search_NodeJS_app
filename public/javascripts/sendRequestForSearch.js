@@ -71,14 +71,13 @@ let getMyPosition = {
                 });
         });
 
-        $('#getAllCountry').on('click', function (e) {
+        $('#scaleAllCountry').on('click', function (e) {
             e.preventDefault();
             let allCountryObj = {
                 lat: 49.391388,
                 lng: 32.006755
             };
-            let cordsObj = self.convertObJToUrl(allCountryObj);
-            self.setLocationOnMap(cordsObj, 7);
+            self.setLocationOnMap(allCountryObj, 7);
         });
 
         $('body').on('click', '#popularCity', function(e) {

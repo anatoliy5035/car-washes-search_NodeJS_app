@@ -1,7 +1,7 @@
 var Map = (function () {
     let myOptions = {
         center: {lat: 50.444247, lng: 30.508972},
-        zoom: setZoom() || 13,
+        zoom: 13,
     };
     let map = new google.maps.Map(document.getElementById('js-map'), myOptions);
     let infoWindow = new google.maps.InfoWindow({map: map});
@@ -19,26 +19,6 @@ var Map = (function () {
         origin: new google.maps.Point(0, 0)
     };
 
-    function setZoom() {
-        let pairs = location.search.slice(1).split('&');
-        let resultCords = {};
-        pairs.forEach(function (pair) {
-            pair = pair.split('=');
-            resultCords[pair[0]] = decodeURIComponent(pair[1] || '');
-        });
-        return +resultCords.zoom;
-    }
-    
-    function getScale() {
-        let pairs = location.search.slice(1).split('&');
-        let resultCords = {};
-        pairs.forEach(function (pair) {
-            pair = pair.split('=');
-            resultCords[pair[0]] = decodeURIComponent(pair[1] || '');
-        });
-        return resultCords.scale;
-    }
-
     function getMarkersFromDB() {
         return fetch('/getmarkers', {
             method: 'post',
@@ -49,14 +29,21 @@ var Map = (function () {
         });
     }
 
-    function setLocationOnMap(position) {
-        positionGlob = position
-        let marker = new google.maps.Marker({
-            position : new google.maps.LatLng(position.lat, position.lng),
-            map : map
-        });
+    function setLocationOnMap(position, zoom) {
+        positionGlob = position;
 
-        map.setCenter(position);
+        if(zoom !== undefined) {
+            map.setZoom(zoom);
+            writeAllCountryMarkers(position, markers)
+        } else  {
+            let marker = new google.maps.Marker({
+                position : new google.maps.LatLng(position.lat, position.lng),
+                map : map
+            });
+
+            map.setZoom(zoom);
+            map.setCenter(myOptions.zoom);
+        }
     }
 
     function addInfoWindow(marker, i) {
@@ -88,32 +75,29 @@ var Map = (function () {
     }
 
     function writeAllCountryMarkers(center, markers) {
-        for (let i = 0; i < markers.length; i++) {
-            let marker = new google.maps.Marker({
-                position: new google.maps.LatLng(markers[i].lat, markers[i].lng),
-                map: map,
-                icon: icon
-            });
-            addInfoWindow(marker, i);
-        }
+        console.log(markers)
+        // for (let i = 0; i < markers.length; i++) {
+        //     let marker = new google.maps.Marker({
+        //         position: new google.maps.LatLng(markers[i].lat, markers[i].lng),
+        //         map: map,
+        //         icon: icon
+        //     });
+        //     addInfoWindow(marker, i);
+        // }
     }
 
     function writeMarkers(markers) {
-        console.log(positionGlob);
-        // return new Promise(function (resolve, reject) {
             let positionLoc = positionGlob;
             let center = new google.maps.LatLng(positionLoc.lat, positionLoc.lng);
+
             // if (getScale()) {
             //     writeAllCountryMarkers(center, markers);
             // } else {
-                writeRadiusMarkers(center, markers);
-            // }
-            // resolve();
-        // })
+            writeRadiusMarkers(center, markers);
     }
 
     function init(position, zoom) {
-        setLocationOnMap(position);
+        setLocationOnMap(position, zoom);
         getMarkersFromDB()
         .then((response) => {
             if(response.status !== 200) {
@@ -133,8 +117,7 @@ var Map = (function () {
     }
 
     return {
-        init: init,
-        setZoom : setZoom
+        init: init
     }
 
 })();
