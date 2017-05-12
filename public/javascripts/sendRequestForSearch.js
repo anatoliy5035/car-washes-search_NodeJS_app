@@ -1,14 +1,5 @@
 let getMyPosition = {
 
-    convertObJToUrl: function (Obj) {
-        let str = [];
-        for(let p in Obj)
-            if (Obj.hasOwnProperty(p)) {
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(Obj[p]));
-            }
-        return str.join("&");
-    },
-
     getMyGeolocation: function () {
         return new Promise(function (resolve, reject) {
             navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -82,12 +73,13 @@ let getMyPosition = {
 
         $('body').on('click', '#popularCity', function(e) {
             e.preventDefault();
+
             let allCountryObj = {
                 lat: $(this).data('lat'),
                 lng: $(this).data('lng')
             };
-            let cordsObj = self.convertObJToUrl(allCountryObj);
-            self.setLocationOnMap(cordsObj);
+
+            self.setLocationOnMap(allCountryObj);
         });
     },
 
