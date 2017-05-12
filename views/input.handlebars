@@ -2,33 +2,34 @@
     <div class="ui four column grid">
         <div class="two column row">
            <div class="inputs-search">
-               <form name="login-form" class="search-form">
-                   <div class="ui fluid search selection dropdown">
-                       <img class="location-icon-dropdown" src="/images/location.svg" alt="">
-                       <input type="hidden" name="country">
-                       <i class="dropdown icon"></i>
-                       <div class="default text">Выберите метод сортировки</div>
-                       <div class="menu">
-                           <div class="item">
-                               <a id="getMyLoc" href="javascript:;">Получить список по моему местоположению</a>
-                           </div>
-                           <div class="item">
-                               <a id="scaleAllCountry" href="javascript:;">Вся Украина</a>
-                           </div>
-                           {{#each cities}}
-                               <div class="item">
-                                   <a id="popularCity" href="javascript:;" data-lat="{{this.lat}}" data-lng="{{this.lng}}">{{this.city}}</a>
-                               </div>
-                           {{/each}}
-                       </div>
-                   </div>
 
+               <div class="ui fluid search selection dropdown">
+                   <img class="location-icon-dropdown" src="/images/location.svg" alt="">
+                   <input type="hidden" name="country">
+                   <i class="dropdown icon"></i>
+                   <div class="default text">Выберите метод сортировки</div>
+                   <div class="menu">
+                       <div class="item">
+                           <a id="getMyLocation" href="javascript:;">Получить список по моему местоположению</a>
+                       </div>
+                       <div class="item">
+                           <a id="setScaleToAllCountry" href="javascript:;">Вся Украина</a>
+                       </div>
+                       {{#each cities}}
+                           <div class="item">
+                               <a id="submitPopularCity" href="javascript:;" data-lat="{{this.lat}}" data-lng="{{this.lng}}">{{this.city}}</a>
+                           </div>
+                       {{/each}}
+                   </div>
+               </div>
+
+               <form name="login-form" class="search-form">
                    <div id="locationField" class="ui input">
-                       <input class="search-address" autocomplete="" id="autocomplete" placeholder="Enter your address"
-                              onFocus="geolocate()" type="text">
+                       <input class="search-address" autocomplete="" id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text">
                    </div>
                    <button type="submit" class="search-button ui primary basic button" id="submitInputButton">Поиск</button>
                </form>
+
            </div>
         </div>
     </div>

@@ -29,6 +29,7 @@ var Map = (function () {
         });
     }
 
+
     function setLocationOnMap(position, zoom) {
         positionGlob = position;
 
