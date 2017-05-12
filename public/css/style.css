@@ -16,6 +16,7 @@ header {
 
 .search-form {
     text-align: center;
+    float: left;
 }
 
 .search-button {
@@ -73,6 +74,7 @@ div.ui.selection.dropdown .menu>.item {
 
 .input-section {
     padding-top: 80px;
+    padding-bottom: 50px;
 }
 
 .dropdown.search {

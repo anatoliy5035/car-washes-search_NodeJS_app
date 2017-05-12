@@ -6,8 +6,9 @@ var Map = (function () {
     let map = new google.maps.Map(document.getElementById('js-map'), myOptions);
     let infoWindow = new google.maps.InfoWindow({map: map});
     let positionGlob;
-    let markers;
+    let markersGlob;
     let templateInfoWindow;
+    let defaultZoom = myOptions.zoom;
     let icon = {
         url: 'images/ico.png',
         size: new google.maps.Size(59, 85),
@@ -30,7 +31,7 @@ var Map = (function () {
     }
 
 
-    function setLocationOnMap(position, zoom) {
+    function setLocationOnMap(position) {
         positionGlob = position;
 
         let marker = new google.maps.Marker({
@@ -38,8 +39,7 @@ var Map = (function () {
             map : map
         });
 
-        map.setZoom(zoom);
-        map.setCenter(myOptions.zoom);
+        map.setCenter(position);
     }
 
     function addInfoWindow(marker, i) {
@@ -47,8 +47,8 @@ var Map = (function () {
         google.maps.event.addListener(marker, 'click', (function (marker, i) {
             return function () {
                 infowindow.setContent(
-                    '<h4>Название: '+ markers[i].name +'</h4>'+
-                    '<h4>Адрес: '+ markers[i].address +'</h4>'
+                    '<h4>Название: '+ markersGlob[i].name +'</h4>'+
+                    '<h4>Адрес: '+ markersGlob[i].address +'</h4>'
                 );
                 infowindow.open(map, marker);
             }
@@ -71,7 +71,7 @@ var Map = (function () {
         }
     }
 
-    function writeAllCountryMarkers(center, markers) {
+    function writeAllCountryMarkers(markers) {
         for (let i = 0; i < markers.length; i++) {
             let marker = new google.maps.Marker({
                 position: new google.maps.LatLng(markers[i].lat, markers[i].lng),
@@ -82,19 +82,27 @@ var Map = (function () {
         }
     }
 
+    function cleanPreviousMarkers() {
+        // clearMarkers();
+        // map.removeOverlay(markersGlob);
+    }
+
     function writeMarkers(markers, zoom) {
+        cleanPreviousMarkers();
         let positionLoc = positionGlob;
         let center = new google.maps.LatLng(positionLoc.lat, positionLoc.lng);
 
         if(zoom !== undefined) {
-            writeAllCountryMarkers(center, markers);
+            map.setZoom(zoom);
+            writeAllCountryMarkers(markers);
         } else {
+            map.setZoom(defaultZoom);
             writeRadiusMarkers(center, markers);
         }
     }
 
     function init(position, zoom) {
-        setLocationOnMap(position, zoom);
+        setLocationOnMap(position);
         getMarkersFromDB()
         .then((response) => {
             if(response.status !== 200) {
@@ -103,10 +111,10 @@ var Map = (function () {
             return response.json();
         })
         .then((markersArray) => {
-            markers = markersArray;
+            markersGlob = markersArray;
         })
         .then(() => {
-            writeMarkers(markers, zoom);
+            writeMarkers(markersGlob, zoom);
         })
         .catch((err) => {
             console.log(err);
@@ -118,6 +126,4 @@ var Map = (function () {
     }
 
 })();
-
-// Map.init();
 

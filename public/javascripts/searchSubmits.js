@@ -6,7 +6,6 @@ let searchSubmits = {
           });
       },
 
-
     getMarkersFromInput: function () {
         let inputValue = $('.search-address').val();
 
